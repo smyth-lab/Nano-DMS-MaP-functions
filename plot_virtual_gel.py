@@ -12,8 +12,13 @@ def plot_virtual_gel(samples, sample_length_dists, max_read_length = 6000, binsi
     
     sample_length_hists = {}
     for row, sample in enumerate(samples):
-        read_length_hist = np.histogram(sample_length_dists[sample], bins = nbins, range=[1,1+max_read_length])[0]
-        per_sample_norm[row] = np.sum(sample_length_dists[sample])
+        try:
+            sample_read_lengths = sample_length_dists[sample]
+        except:
+            print(f'no data found for sample {sample}')
+            sample_read_lengths = np.array([0])
+        read_length_hist = np.histogram(sample_read_lengths, bins = nbins, range=[1,1+max_read_length])[0]
+        per_sample_norm[row] = np.sum(sample_read_lengths)
         sample_length_hists[sample] = read_length_hist
         matrix[row, :] = read_length_hist
         
