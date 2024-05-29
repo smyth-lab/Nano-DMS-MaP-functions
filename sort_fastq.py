@@ -14,9 +14,9 @@ parser.add_argument("-fi", "--fastq_infile")
 parser.add_argument("-fo", "--fastq_out_prefix")
 parser.add_argument("-ir", "--isoquant-read_assignment_file")
 parser.add_argument("-rdf", "--read_assignment_df")
-parser.add_argument("-tsv", "--read_assignment_file")
+parser.add_argument("-tsv", "--read_assignment_file", help = "no header, format: [assignment\tread_id]")
 parser.add_argument("-o", "--outfile_prefix")
-parser.add_argument("-m", "--read_id_mapping_file")
+parser.add_argument("-sub", "--subassignment_df")
 parser.add_argument("-u", "--output_unsorted", action="store_true")
 
 def sort_fastq_by_tsv(fastq_infile, read_assignment_file, fastq_outprefix, output_unsorted=False):
@@ -215,9 +215,9 @@ if __name__ == "__main__":
         print("Reading in assignment_df from", args.read_assignment_df)
         print("Outfile prefix:", args.outfile_prefix)
         sort_fastq_by_isoform_isoquant(args.fastq_infile, args.read_assignment_df, args.fastq_out_prefix, args.output_unsorted, df = True)
-    elif args.read_id_mapping_file:
-        print("Detected read_id_mappings_file option, resorting per isoform reads according to 4sU status")
-        sort_fastq_isoform_by_4sU(args.fastq_infile, args.fastq_out_prefix, args.read_id_mapping_file)
+    elif args.subassignment_df:
+        print("Detected subassignment_df option, resorting per isoform reads according to 4sU status")
+        sort_fastq_isoform_by_4sU(args.fastq_infile, args.fastq_out_prefix, args.subassignment_df)
     elif args.read_assignment_file:
         print("Detected tsv read assignment file, performing fastq sorting according to assignment.")
         sort_fastq_by_tsv(args.fastq_infile, args.read_assignment_file, args.outfile_prefix, args.output_unsorted)
